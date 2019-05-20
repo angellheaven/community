@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="utf-8">
+	<style type="text/css">
+		div, a, span{
+			margin: 0;
+			padding: 0;
+			list-style: none;
+			border: none;
+		}
+
+		.slider{
+			width: 1000px;
+			height: 304px;
+			margin: 100px auto;
+			position: relative;
+			overflow: hidden;
+		}
+
+		.slider_scroll{
+			width: 1000px;
+			height: 304px;
+			position: relative;
+
+		}
+
+		.slider-main{
+			width: 2000px;
+			height: 304px;
+			position: relative;
+		}
+
+		.slider-main-img{
+			width: 1000px;
+			height: 304px;
+			position: absolute;
+			left:0;
+			top:0;
+		}
+
+		.slider-main-img img{
+			width: 100%;
+			vertical-align: top;
+		}
+
+		.slider-ctr{
+			cursor: pointer;
+		}
+
+		.slider-ctr-prev{
+			width: 21.2px;
+			height: 45.2px;
+			position: absolute;
+			left: 10px;
+			top: 50%;
+			margin-top: -27.6px;
+			background: url("https://connect.bosch.com/files/form/anonymous/api/library/3c1e8917-c36c-4474-860a-70e7ea2b2b9e/document/3abc1ab9-d624-45ca-9443-b0a341a7528d/media/head_pic_left.png");
+			background-size: contain;
+			display: none;
+		}
+
+		.slider-ctr-next{
+			width: 21.2px;
+			height: 45.2px;
+			position: absolute;
+			right: 10px;
+			top: 50%;
+			margin-top: -27.6px;
+			background: url("https://connect.bosch.com/files/form/anonymous/api/library/3c1e8917-c36c-4474-860a-70e7ea2b2b9e/document/2ceafd0c-89b6-4e2e-97a2-23c7a64ca9a8/media/head_pic_right.png");
+			background-size: 100% 100%;
+			display: none;
+		}
+
+		.slider-ctr-bottom{
+			width: 200px;
+			height: 20px;
+			margin: 0 auto;
+			/*background: red;*/
+			position: absolute;
+			bottom: 10px;
+			left: 50%;
+			margin-left: -100px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+
+		.slider-ctr-icon{
+			width: 10px;
+			height: 10px;
+			border-radius: 50%;
+			background-color: rgba(0,0,0,0.3);
+			margin-left: 15px;
+			text-indent: 40em;
+		}
+
+		.current{
+			background-color: rgba(255,255,255,0.6);
+		}
+
+
+	</style>
+</head>
+<body>
+	<div id="slider" class="slider">
+		<!-- photos -->
+		<div id= "slider_scroll" class="slider-scroll">
+			<div id="slider_main" class="slider-main">
+				<!-- 1st photo -->
+				<div class="slider-main-img">
+					<a href="#"><img src="https://connect.bosch.com/files/form/anonymous/api/library/3c1e8917-c36c-4474-860a-70e7ea2b2b9e/document/cab52e14-3eef-4ea8-9ff6-087120d7a66f/media/head_pic_1.jpg"></a>
+				</div>
+				<!-- 2nd photo -->
+				<div class="slider-main-img">
+					<a href="#"><img src="https://connect.bosch.com/files/form/anonymous/api/library/3c1e8917-c36c-4474-860a-70e7ea2b2b9e/document/7fe030a6-1d23-44fc-806b-552e4d7996dd/media/head_pic_2.jpg"></a>
+				</div>
+				<!-- 3rd photo -->
+				<div class="slider-main-img">
+					<a href="#"><img src="https://connect.bosch.com/files/form/anonymous/api/library/3c1e8917-c36c-4474-860a-70e7ea2b2b9e/document/6ecd84ee-6f8e-44d5-b677-3526daffed0f/media/head_pic_3.jpg"></a>
+				</div>
+				<!-- 4th photo -->
+				<div class="slider-main-img">
+					<a href="#"><img src="https://connect.bosch.com/files/form/anonymous/api/library/3c1e8917-c36c-4474-860a-70e7ea2b2b9e/document/b392e8e0-0ed5-4559-a689-2acebc5a32df/media/head_pic_4.jpg"></a>
+				</div>
+				<!-- 5th photo -->
+				<div class="slider-main-img">
+					<a href="#"><img src="https://connect.bosch.com/files/form/anonymous/api/library/3c1e8917-c36c-4474-860a-70e7ea2b2b9e/document/045bdd56-4132-4273-879b-3b030bd21bb5/media/head_pic_5.jpg"></a>
+				</div>
+			</div>
+		</div>
+		<!-- controls -->
+		<div id="slider_ctr" class="slider-ctr">
+			<!-- control left -->
+			<div id="prev" class="slider-ctr-prev ear"></div>
+			<!-- control bottom -->
+			<div class="slider-ctr-bottom">
+				<span class="slider-ctr-icon"></span>
+				<span class="slider-ctr-icon"></span>
+				<span class="slider-ctr-icon"></span>
+				<span class="slider-ctr-icon"></span>
+				<span class="slider-ctr-icon"></span>
+			</div>
+			<!-- control left -->
+			<div id="next" class="slider-ctr-next ear"></div>
+		</div>
+	</div>
+<script type="text/javascript">
+	
+	window.onload = function(){
+		var slider = $('slider');
+		var slider_main = $('slider_main');
+		var slider_scroll = $('slider_scroll');
+		var slider_main_img = slider_main.children;
+		var slider_ctr = $('slider_ctr');
+		var slider_ctr_bottom = slider_ctr.children[1];
+		var slider_ctr_icon = slider_ctr_bottom.children;
+		var ear = slider_ctr.getElementsByClassName('ear');
+		var iNow = 0;
+
+		// 1. 下方指示器
+		for (var i=0; i<slider_main_img.length; i++){
+			slider_ctr_icon[i].innerText = i;
+		}
+
+		slider_ctr_icon[0].className = "slider-ctr-icon current";
+		
+
+		// 2.鼠标进入 左右变化
+		slider_scroll.onmouseover = function(){
+			ear[0].style.display = "block";
+			ear[1].style.display = "block";
+		}
+
+		slider_scroll.onmouseout = function(){
+			ear[0].style.display = "none";
+			ear[1].style.display = "none";
+		}
+
+
+		// 3. 左移 
+		for (var i=1; i < slider_ctr_icon.length; i++){
+			slider_main_img[i].style.left = slider.offsetWidth + 'px';
+		}
+
+		// 4. 点击左侧按钮
+
+		$('prev').onmousedown = function(){
+			buffer(slider_main_img[iNow],{"left": slider.offsetWidth}, null);
+			iNow --;
+			if (iNow < 0){
+				iNow = slider_main_img.length-1;
+			}
+			slider_main_img[iNow].style.left = -slider.offsetWidth + 'px';
+			buffer(slider_main_img[iNow],{"left":0});
+			changeIndex();
+		}
+
+		$('next').onmousedown = function(){
+			buffer(slider_main_img[iNow],{"left": -slider.offsetWidth}, null);
+			iNow ++;
+			if (iNow >= slider_main_img.length){
+				iNow = 0;
+			}
+			slider_main_img[iNow].style.left = slider.offsetWidth + 'px';
+			buffer(slider_main_img[iNow],{"left":0});
+			changeIndex();
+		}
+
+		// 5. 点击下方控件
+
+		
+		for (var i=0; i < slider_ctr_icon.length; i++){
+			slider_ctr_icon[i].onmousedown = function(){
+				var index = parseInt(this.innerText);
+				if(index > iNow){
+				buffer(slider_main_img[iNow], {"left": -slider.offsetWidth});
+				slider_main_img[index].style.left = slider.offsetWidth + 'px';
+				buffer(slider_main_img[index],{"left": 0});
+				}else if(index < iNow){
+					buffer(slider_main_img[iNow], {"left": slider.offsetWidth});
+					slider_main_img[index].style.left = -slider.offsetWidth + 'px';
+					buffer(slider_main_img[index],{"left": 0});
+				}
+				console.log(iNow)
+				iNow = index;
+				console.log(iNow)
+				console.log(index)
+				
+				for (var i=0; i < slider_ctr_icon.length; i++){
+					slider_ctr_icon[i].className = 'slider-ctr-icon';
+				}
+				slider_ctr_icon[iNow].className = 'slider-ctr-icon current';
+				// changeIndex();
+				
+			}
+		}
+
+		// 5. 自动轮播
+
+		var timer = setInterval(autoplay, 2000);
+		slider.onmouseover = function(){
+			clearInterval(timer);
+		}
+
+		slider.onmouseout = function(){
+			timer = setInterval (autoplay, 2000);
+		}
+
+
+
+
+
+
+	function $(id){
+		return typeof id === "string"? document.getElementById(id) : null;
+	}
+
+	function buffer(obj, json, fn){
+		clearInterval (obj.timer);
+		var begin = 0, target = 0, speed = 0;
+		obj.timer = setInterval(function(){
+			var flag = true;
+			for (var k in json) {
+				begin = parseInt(getStyleAttr(obj,k) || 0);
+				target = parseInt(json[k]);
+				speed = (target - begin) * 0.15;
+				speed = (target > begin)? Math.ceil(speed) : Math.floor(speed);
+				obj.style[k] = begin + speed + 'px';					
+				if (begin != target){
+						flag = false;
+				}
+			}
+			if (flag) {
+				clearInterval(obj.timer);
+				if (fn) {
+					fn();
+				}
+			}
+		}, 20);
+	}
+
+function getStyleAttr(obj, attr){
+	if(obj.currentStyle){
+		return obj.currentStyle[attr];
+	}else {
+		return window.getComputedStyle(obj, null)[attr];
+	}
+}
+
+function changeIndex(){
+	for (var i=0; i<slider_ctr_icon.length; i++){
+		slider_ctr_icon[i].className = 'slider-ctr-icon';
+	}
+	slider_ctr_icon[iNow].className = 'slider-ctr-icon current';
+}
+
+function autoplay(){
+	buffer(slider_main_img[iNow], {"left": -slider.offsetWidth});
+	iNow ++;
+	if(iNow >= slider_main_img.length){
+		iNow = 0;
+	}
+	slider_main_img[iNow].style.left = slider.offsetWidth + 'px';
+	buffer(slider_main_img[iNow], {"left":0});
+	changeIndex();
+}
+
+
+}
+</script>
+</body>
+</html>
